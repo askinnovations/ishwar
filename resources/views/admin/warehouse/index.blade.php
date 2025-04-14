@@ -231,7 +231,7 @@
             document.querySelectorAll(".view-btn").forEach(button => {
                 button.addEventListener("click", function () {
                     let row = button.closest("tr");
-                    alert(row);
+                  
                     document.getElementById("viewwarehouse_name").textContent = row.cells[1].textContent;
                     document.getElementById("viewaddress").textContent = row.cells[2].textContent;
                     document.getElementById("incharge").textContent = row.cells[3].textContent;

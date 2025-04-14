@@ -4,7 +4,7 @@ use App\Http\Controllers\{
     EmployeeController, PayrollController, Auth\LoginController, AdminDashboardController,
     UserController, TyreController, WarehouseController,OrderController,
     ConsignmentNoteController, FreightBillController, StockTransferController, DriverController,
-    AttendanceController, MaintenanceController, VehicleController
+    AttendanceController, MaintenanceController, VehicleController,TaskManagmentController
 };
 
 Route::get('/', function () {
@@ -44,7 +44,7 @@ Route::prefix('admin')->group(function () {
 
    // orders Management
     Route::prefix('orders')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('admin.orders.index'); 
+        Route::get('/', [OrderController::class, 'index'])->name(name: 'admin.orders.index'); 
         Route::get('/create', [OrderController::class, 'create'])->name('admin.orders.create');
         Route::post('/store', [OrderController::class, 'store'])->name('admin.orders.store'); 
         Route::get('/view/{id}', [OrderController::class, 'orders'])->name('admin.orders.view');  
@@ -58,8 +58,9 @@ Route::prefix('admin')->group(function () {
     Route::prefix('tyres')->group(function () {
         Route::get('/', [TyreController::class, 'index'])->name('admin.tyres.index');
         Route::post('/store', [TyreController::class, 'store'])->name('admin.tyres.store');
-        Route::put('/{id}', [TyreController::class, 'update'])->name('admin.tyres.update');
-        Route::delete('/delete/{id}', [TyreController::class, 'destroy'])->name('admin.tyres.delete');
+        Route::put('/update/{id}', [TyreController::class, 'update'])->name('admin.tyres.update');
+        Route::get('/delete/{id}', [TyreController::class, 'destroy'])->name('admin.tyres.delete');
+       
     });
 
     // Warehouse Management
@@ -69,17 +70,61 @@ Route::prefix('admin')->group(function () {
         Route::put('/update/{id}', [WarehouseController::class, 'update'])->name('admin.warehouse.update');
         Route::delete('/delete/{id}', [WarehouseController::class, 'destroy'])->name('admin.warehouse.delete');
     });
+        //maintenanceController
+    Route::prefix('maintenance')->group(function () {
+        Route::get('/', [MaintenanceController::class, 'index'])->name('admin.maintenance.index');
+        Route::post('/store', [MaintenanceController::class, 'store'])->name('admin.maintenance.store');
+        Route::put('/update/{id}', [MaintenanceController::class, 'update'])->name('admin.maintenance.update');
+        Route::get('/delete/{id}', [MaintenanceController::class, 'destroy'])->name('admin.maintenance.delete');
+    });
+      
+   
+ Route::prefix('employees')->group( function(){
+    Route::get('/', [EmployeeController::class, 'index'])->name('admin.employees.index');
+    Route::get('/create', [EmployeeController::class, 'create'])->name('admin.employees.create');
+    Route::post('/store', [EmployeeController::class, 'store'])->name('admin.employees.store');
+    Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('admin.employees.edit');
+    Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('admin.employees.show');
+    Route::get('/task/{id}', [EmployeeController::class, 'task'])->name('admin.employees.task');
+    Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('admin.employees.update');
+    Route::get('/delete/{id}', [EmployeeController::class, 'destroy'])->name('admin.employees.delete');
+  });
+    Route::prefix('drivers')->group( function(){
+    Route::get('', [DriverController::class, 'index'])->name('admin.drivers.index');
+    Route::get('/create', action: [DriverController::class, 'create'])->name('admin.drivers.create');
+    Route::post('/store', [DriverController::class, 'store'])->name('admin.drivers.store');
+    Route::get('/edit/{id}', [DriverController::class, 'edit'])->name('admin.drivers.edit');
+    Route::get('/show/{id}', [DriverController::class, 'show'])->name('admin.drivers.show');
+    Route::post('/update/{id}', [DriverController::class, 'update'])->name('admin.drivers.update');
+    Route::get('/delete/{id}', [DriverController::class, 'destroy'])->name('admin.drivers.delete');
+    });
+// attendance
+Route::prefix('attendance')->group( function(){
+    Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+    Route::post('/update', [AttendanceController::class, 'update'])->name('admin.attendance.update');
+   });
 
-    // Other Modulesadmin
-    
-    Route::get('/consignment-note/index', [ConsignmentNoteController::class, 'index'])->name('admin.consignment.index');
-    Route::get('/freight-bill/index', [FreightBillController::class, 'index'])->name('admin.freight.index');
+   Route::prefix('payroll')->group( function(){
+   Route::get('/', [PayrollController::class, 'index'])->name('admin.payroll.index');
+   Route::get('/show/{id}', [PayrollController::class, 'show'])->name('admin.payroll.show');
+   });
+
+     Route::prefix('task-managment')->group(function(){
+     Route::get('/', [TaskManagmentController::class, 'index'])->name('admin.task_management.index');
+     Route::post('/store', [TaskManagmentController::class, 'store'])->name('admin.task_management.store');
+     Route::put('/update/{id}', [TaskManagmentController::class, 'update'])->name('admin.task_management.update');
+     Route::get('/delete/{id}', [TaskManagmentController::class, 'destroy'])->name('admin.task_management.delete');
+     Route::get('/search-by-date', [TaskManagmentController::class, 'searchByDate'])->name('admin.task_management.searchByDate');
+     Route::get('/close-task/{id}', [TaskManagmentController::class, 'closeTask'])->name('admin.task_management.task_status');
+
+   });
+      
     Route::get('/stock-transfer/index', [StockTransferController::class, 'index'])->name('admin.stock.index');
-    Route::get('/employees/index', [EmployeeController::class, 'index'])->name('admin.employees.index');
-    Route::get('/drivers/index', [DriverController::class, 'index'])->name('admin.drivers.index');
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('admin.attendance.index');
-    Route::get('/payroll/index', [PayrollController::class, 'index'])->name('admin.payroll.index');
-    // Route::get('/maintenance/index', [MaintenanceController::class, 'index'])->name('admin.maintenance.index');
+
+   
+    
+    
+
 
     
 });

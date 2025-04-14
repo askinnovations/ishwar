@@ -30,15 +30,15 @@ class VehicleController extends Controller
         $validatedData = $request->validate([
             'vehicle_type' => 'required|string',
             'vehicle_no' => 'required|string|unique:vehicles,vehicle_no',
-            'registered_mobile_number' => 'required|string',
+           'registered_mobile_number' => 'required|numeric',
             'gvw' => 'nullable|string',
             'payload' => 'nullable|string',
             'chassis_number' => 'nullable|string',
             'engine_number' => 'nullable|string',
             'number_of_tyres' => 'nullable|integer',
             'rc_document_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'rc_valid_from' => 'required|date|date_format:Y-m-d',
-            'rc_valid_till' => 'required|date|date_format:Y-m-d',
+            'rc_valid_from' => 'nullable|date|date_format:Y-m-d',
+            'rc_valid_till' => 'nullable|date|date_format:Y-m-d',
             'fitness_certificate' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'fitness_valid_till' => 'nullable|date|date_format:Y-m-d',
             'insurance_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -56,7 +56,7 @@ class VehicleController extends Controller
         ]);
     
         
-        // फ़ाइल पथों को संग्रहीत करने के लिए वेरिएबल्स
+        
     
     $rcDocumentPath = null;
     $fitnessCertificatePath = null;
@@ -65,7 +65,7 @@ class VehicleController extends Controller
     $nationalPermitPath = null;
     $taxDocumentPath = null;
 
-    // प्रत्येक फ़ाइल के लिए अपलोड हैंडलिंग
+    
     
     if ($request->hasFile('rc_document_file')) {
         $rcDocumentPath = $request->file('rc_document_file')->store('vehicals/rc', 'public');
@@ -115,7 +115,7 @@ class VehicleController extends Controller
           'tax_valid_from' => isset($validatedData['tax_valid_from']) ? Carbon::parse($validatedData['tax_valid_from']) : null,
           'tax_valid_till' => isset($validatedData['tax_valid_till']) ? Carbon::parse($validatedData['tax_valid_till']) : null,
       ]);
-      return redirect()->route('admin.vehicles.index')->with('success', 'वाहन सफलतापूर्वक जोड़ा गया!');
+      return redirect()->route('admin.vehicles.index')->with('success', 'Vehicle created successfully!');
     }
     
     
@@ -127,11 +127,16 @@ class VehicleController extends Controller
     
    public function destroy($id)
    {
-    $user = Vehicle::findOrFail($id);
-    $user->delete();
+    $vehicle = Vehicle::findOrFail($id);
+    $vehicle->delete();
 
-       return response()->json(['success' => true, 'message' => 'Vehicle deleted successfully!']);
-   }
+    
+    return response()->json(['message' => 'Vehicle deleted successfully.']);
+
+   
+}
+
+
 
    public function edit($id)
   {
@@ -145,41 +150,85 @@ class VehicleController extends Controller
 
 
   public function update(Request $request, $id)
-  {
-      // dd($request->all());
+{
+    $vehicle = Vehicle::findOrFail($id);
 
-      $request->validate([
-          'vehicle_type' => 'required|string|max:255',
-          'gvw' => 'nullable|numeric',
-          'payload' => 'nullable|numeric',
-          'vehicle_no' => 'required|string|max:255',
-          'chassis_number' => 'required|string|max:255',
-          'engine_number' => 'required|string|max:255',
-          'registered_mobile_number' => 'required|string|max:15',
-          'number_of_tyres' => 'nullable|integer',
-          'rc_valid_from' => 'nullable|date',
-          'rc_valid_till' => 'nullable|date',
-          'fitness_valid_from' => 'nullable|date',
-          'fitness_valid_till' => 'nullable|date',
-          'insurance_valid_from' => 'nullable|date',
-          'insurance_valid_till' => 'nullable|date',
-          'auth_permit_valid_from' => 'nullable|date',
-          'auth_permit_valid_till' => 'nullable|date',
-          'national_permit_valid_from' => 'nullable|date',
-          'national_permit_valid_till' => 'nullable|date',
-          'tax_valid_from' => 'nullable|date',
-          'tax_valid_till' => 'nullable|date',
-      ]);
-  
+    $validatedData = $request->validate([
+        'vehicle_type' => 'required|string',
+        'vehicle_no' => 'required|string|unique:vehicles,vehicle_no,' . $vehicle->id,
+        'registered_mobile_number' => 'required|string',
+        'gvw' => 'nullable|string',
+        'payload' => 'nullable|string',
+        'chassis_number' => 'nullable|string',
+        'engine_number' => 'nullable|string',
+        'number_of_tyres' => 'nullable|integer',
+        'rc_document_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'rc_valid_from' => 'nullable|date|date_format:Y-m-d',
+        'rc_valid_till' => 'nullable|date|date_format:Y-m-d',
+        'fitness_certificate' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'fitness_valid_till' => 'nullable|date|date_format:Y-m-d',
+        'insurance_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'insurance_valid_from' => 'nullable|date|date_format:Y-m-d',
+        'insurance_valid_till' => 'nullable|date|date_format:Y-m-d',
+        'authorization_permit' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'auth_permit_valid_from' => 'nullable|date|date_format:Y-m-d',
+        'auth_permit_valid_till' => 'nullable|date|date_format:Y-m-d',
+        'national_permit' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'national_permit_valid_from' => 'nullable|date|date_format:Y-m-d',
+        'national_permit_valid_till' => 'nullable|date|date_format:Y-m-d',
+        'tax_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'tax_valid_from' => 'nullable|date|date_format:Y-m-d',
+        'tax_valid_till' => 'nullable|date|date_format:Y-m-d',
+    ]);
+
+    
+    function updateFile($request, $field, $folder, $existingPath)
+    {
+        if ($request->hasFile($field)) {
+            if ($existingPath && Storage::disk('public')->exists($existingPath)) {
+                Storage::disk('public')->delete($existingPath);
+            }
+            return $request->file($field)->store("vehicals/{$folder}", 'public');
+        }
+        return $existingPath;
+    }
+
+    
+    $vehicle->rc_document_file = updateFile($request, 'rc_document_file', 'rc', $vehicle->rc_document_file);
+    $vehicle->fitness_certificate = updateFile($request, 'fitness_certificate', 'fitness', $vehicle->fitness_certificate);
+    $vehicle->insurance_document = updateFile($request, 'insurance_document', 'insurance', $vehicle->insurance_document);
+    $vehicle->authorization_permit = updateFile($request, 'authorization_permit', 'auth_permit', $vehicle->authorization_permit);
+    $vehicle->national_permit = updateFile($request, 'national_permit', 'national_permit', $vehicle->national_permit);
+    $vehicle->tax_document = updateFile($request, 'tax_document', 'tax', $vehicle->tax_document);
+
+    
+    $vehicle->update([
+        'vehicle_type' => $validatedData['vehicle_type'],
+        'vehicle_no' => $validatedData['vehicle_no'],
+        'registered_mobile_number' => $validatedData['registered_mobile_number'],
+        'gvw' => $validatedData['gvw'] ?? null,
+        'payload' => $validatedData['payload'] ?? null,
+        'chassis_number' => $validatedData['chassis_number'] ?? null,
+        'engine_number' => $validatedData['engine_number'] ?? null,
+        'number_of_tyres' => $validatedData['number_of_tyres'] ?? null,
+        'rc_valid_from' => Carbon::parse($validatedData['rc_valid_from']),
+        'rc_valid_till' => Carbon::parse($validatedData['rc_valid_till']),
+        'fitness_valid_till' => isset($validatedData['fitness_valid_till']) ? Carbon::parse($validatedData['fitness_valid_till']) : null,
+        'insurance_valid_from' => isset($validatedData['insurance_valid_from']) ? Carbon::parse($validatedData['insurance_valid_from']) : null,
+        'insurance_valid_till' => isset($validatedData['insurance_valid_till']) ? Carbon::parse($validatedData['insurance_valid_till']) : null,
+        'auth_permit_valid_from' => isset($validatedData['auth_permit_valid_from']) ? Carbon::parse($validatedData['auth_permit_valid_from']) : null,
+        'auth_permit_valid_till' => isset($validatedData['auth_permit_valid_till']) ? Carbon::parse($validatedData['auth_permit_valid_till']) : null,
+        'national_permit_valid_from' => isset($validatedData['national_permit_valid_from']) ? Carbon::parse($validatedData['national_permit_valid_from']) : null,
+        'national_permit_valid_till' => isset($validatedData['national_permit_valid_till']) ? Carbon::parse($validatedData['national_permit_valid_till']) : null,
+        'tax_valid_from' => isset($validatedData['tax_valid_from']) ? Carbon::parse($validatedData['tax_valid_from']) : null,
+        'tax_valid_till' => isset($validatedData['tax_valid_till']) ? Carbon::parse($validatedData['tax_valid_till']) : null,
+    ]);
+
+    
+    return redirect()->route('admin.vehicles.index')->with('success', 'Vehicle updated successfully!');
+}
       
-      $vehicle = Vehicle::findOrFail($id);
-  
-      
-      $vehicle->update($request->all());
-  
-      // सफल संदेश के साथ इंडेक्स पेज पर रीडायरेक्ट करें
-      return redirect()->route('admin.vehicles.index')->with('success', 'वाहन विवरण सफलतापूर्वक अपडेट किया गया!');
   }
   
 
- }
+ 

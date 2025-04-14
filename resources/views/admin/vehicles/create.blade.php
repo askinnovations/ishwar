@@ -8,7 +8,7 @@
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <div>
                                         <h4>🚛 Vehicle Details</h4>
-                                        <p>Enter the required details for the vehicle.</p>
+                                        <p>Enter the  details for the vehicle.</p>
                                     </div>
                                     <a  href="{{ route('admin.vehicles.index') }}" class="btn" id="backToListBtn"
                                         style="background-color: #ca2639; color: white; border: none;">
@@ -22,41 +22,65 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label">Vehicle Type</label>
-                                                <input type="text" class="form-control" name="vehicle_type" placeholder="Enter vehicle type">
+                                                <input type="text" class="form-control" name="vehicle_type" value="{{ old('vehicle_type') }}" placeholder="Enter vehicle type" required>
+                                                @error('vehicle_type')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">GVW</label>
-                                                <input type="text" class="form-control" name="gvw" placeholder="Enter GVW">
+                                                <input type="text" class="form-control" name="gvw" placeholder="Enter GVW" >
+                                                @error('gvw')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Payload</label>
-                                                <input type="text" class="form-control" name="payload" placeholder="Enter payload">
+                                                <input type="text" class="form-control" name="payload" placeholder="Enter payload" required>
+                                                @error('payload')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label">Vehicle No</label>
-                                                <input type="text" class="form-control" name="vehicle_no" placeholder="Enter vehicle number">
+                                                <input type="text" class="form-control" name="vehicle_no" placeholder="Enter vehicle number"  required>
+                                                @error('vehicle_no')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Chassis Number</label>
-                                                <input type="text" class="form-control" name="chassis_number" placeholder="Enter chassis number">
+                                                <input type="text" class="form-control" name="chassis_number" placeholder="Enter chassis number" required>
+                                                @error('chassis_number')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Engine Number</label>
-                                                <input type="text" class="form-control" name="engine_number" placeholder="Enter engine number">
+                                                <input type="text" class="form-control" name="engine_number" placeholder="Enter engine number" required >
+                                                @error('engine_number')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label">Registered Mobile Number</label>
-                                                <input type="text" class="form-control" name="registered_mobile_number" placeholder="Enter mobile number">
+                                                <input type="text" class="form-control" name="registered_mobile_number" placeholder="Enter mobile number" required>
+                                                @error('registered_mobile_number')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Number of Tyres</label>
-                                                <input type="number" class="form-control" name="number_of_tyres" placeholder="Enter number of tyres">
+                                                <input type="number" class="form-control" name="number_of_tyres" placeholder="Enter number of tyres" required>
+                                                @error('number_of_tyres')
+                                                <span class="text-danger">{{ $message }}</span>
+                                               @enderror
                                             </div>
                                         </div>
 
@@ -75,15 +99,25 @@
                                                     <div class="accordion-body row g-3">
                                                         <div class="col-md-4">
                                                             <label class="form-label">Upload Document</label>
-                                                            <input type="file" class="form-control" name="rc_document_file">
+                                                            <input type="file" class="form-control" name="rc_document_file" >
+                                                            @error('rc_document_file')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                           @enderror
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label class="form-label">Valid From</label>
-                                                            <input type="date" class="form-control" name="rc_valid_from">
+                                                            <input type="date" class="form-control" name="rc_valid_from" >
+                                                            @error('rc_valid_from')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                           @enderror
+
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label class="form-label">Valid Till</label>
-                                                            <input type="date" class="form-control" name="rc_valid_till">
+                                                            <input type="date" class="form-control" name="rc_valid_till" >
+                                                            @error('rc_valid_till')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                           @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,11 +135,17 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Upload Document</label>
-                                                                <input type="file" class="form-control" name="fitness_certificate">
+                                                                <input type="file" class="form-control" name="fitness_certificate" >
+                                                                @error('fitness_certificate')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Valid Till</label>
                                                                 <input type="date" class="form-control" name="fitness_valid_till">
+                                                                @error('fitness_valid_till')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <!-- <div class="col-12 text-end">
                                                             <button type="button" class="btn btn-primary btn-sm" onclick="addMore('fitnessContainer')">➕ Add More</button>
@@ -127,15 +167,24 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Upload Document</label>
-                                                                <input type="file" class="form-control" name="insurance_document">
+                                                                <input type="file" class="form-control" name="insurance_document" >
+                                                                @error('insurance_document')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid From</label>
-                                                                <input type="date" class="form-control" name="insurance_valid_from">
+                                                                <input type="date" class="form-control" name="insurance_valid_from" >
+                                                                @error('insurance_valid_from')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid Till</label>
-                                                                <input type="date" class="form-control" name="insurance_valid_till">
+                                                                <input type="date" class="form-control" name="insurance_valid_till" >
+                                                                @error('insurance_valid_till')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <!-- <div class="col-12 text-end">
                                                                 <button type="button" class="btn btn-primary btn-sm" onclick="addMore('insuranceContainer')">➕ Add More</button>
@@ -156,15 +205,24 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Upload Document</label>
-                                                                <input type="file" name="authorization_permit" class="form-control">
+                                                                <input type="file" name="authorization_permit" class="form-control" >
+                                                                @error('authorization_permit')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid From</label>
-                                                                <input type="date" name="auth_permit_valid_from" class="form-control">
+                                                                <input type="date" name="auth_permit_valid_from" class="form-control" >
+                                                                @error('auth_permit_valid_from')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid Till</label>
-                                                                <input type="date" name="auth_permit_valid_till" class="form-control">
+                                                                <input type="date" name="auth_permit_valid_till" class="form-control" >
+                                                                @error('auth_permit_valid_till')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <!-- <div class="col-12 text-end">
                                                                 <button type="button" class="btn btn-primary btn-sm" onclick="addMore('authPermitContainer')">➕ Add More</button>
@@ -186,15 +244,24 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Upload Document</label>
-                                                                <input type="file" name="national_permit" class="form-control">
+                                                                <input type="file" name="national_permit" class="form-control" >
+                                                                @error('national_permit')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid From</label>
-                                                                <input type="date" name="national_permit_valid_from" class="form-control">
+                                                                <input type="date" name="national_permit_valid_from" class="form-control" >
+                                                                @error('national_permit_valid_from')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid Till</label>
-                                                                <input type="date" name="national_permit_valid_till" class="form-control">
+                                                                <input type="date" name="national_permit_valid_till" class="form-control" >
+                                                                @error('national_permit_valid_till')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <!-- <div class="col-12 text-end">
                                                                 <button type="button" class="btn btn-primary btn-sm" onclick="addMore('nationalPermitContainer')">➕ Add More</button>
@@ -216,15 +283,24 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Upload Document</label>
-                                                                <input type="file" name="tax_document" class="form-control">
+                                                                <input type="file" name="tax_document" class="form-control" >
+                                                                @error('tax_document')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid From</label>
-                                                                <input type="date" name="tax_valid_from" class="form-control">
+                                                                <input type="date" name="tax_valid_from" class="form-control" >
+                                                                @error('tax_valid_from')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label class="form-label">Valid Till</label>
-                                                                <input type="date" name="tax_valid_till" class="form-control">
+                                                                <input type="date" name="tax_valid_till" class="form-control" >
+                                                                @error('tax_valid_till')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                               @enderror
                                                             </div>
                                                             <!-- <div class="col-12 text-end">
                                                                 <button type="button" class="btn btn-primary btn-sm" onclick="addMore('taxContainer')">➕ Add More</button>

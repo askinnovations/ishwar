@@ -2,12 +2,26 @@
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
+        
+            
         <!-- start page title -->
         <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                 <h4 class="mb-sm-0 font-size-18">Vehicles</h4>
-
+                                @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show auto-dismiss" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                              @endif
+                          
+                                  @if(session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show auto-dismiss" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                              @endif
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
@@ -43,7 +57,7 @@
                                                 <th>Payload</th>
                                                 <th>Registered Mobile Number</th>
                                                 <th>Number of Tyres</th>
-                                                <th>Action</th>
+                                                <th >Action</th>
                                             </tr>
                                         </thead>
                                         @foreach ($vehicles as $index => $vehicle)
@@ -58,9 +72,13 @@
                                                 <td>
                                                     <a href="{{ route('admin.vehicles.view', ['id' => $vehicle->id]) }}" class="btn btn-sm btn-light view-btn"><i class="fas fa-eye text-primary"></i></a>
                                                     <a href="{{ route('admin.vehicles.edit', ['id' => $vehicle->id]) }}" class="btn btn-sm btn-light edit-btn"><i class="fas fa-pen text-warning"></i></a>
-                                                    <button class="btn btn-sm btn-light delete-btn" data-id="{{ $vehicle->id }}" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                                                                <i class="fas fa-trash text-danger"></i>
-                                                            </button>
+                                                    <button class="btn btn-sm btn-light delete-btn"
+                                                    data-id="{{ $vehicle->id }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteUserModal">
+                                                    <i class="fas fa-trash text-danger"></i>
+                                                </button>
+                                                
                                                    
                                                 </td>
                                             </tr>
@@ -96,35 +114,43 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 <script>
-$(document).ready(function () {
+
     let deleteId = null;
 
-    // Open Delete Modal & Get ID
-    $('.delete-btn').on('click', function () {
-        deleteId = $(this).data('id');
+    // When delete button is clicked
+    $(document).on('click', '.delete-btn', function () {
+        deleteId = $(this).data('id'); // get the ID and store it
     });
 
-    // Confirm Delete
-    
-
+    // When confirm delete is clicked
     $('#confirmDelete').on('click', function () {
-        $.ajax({
-            url: `/admin/vehicles/delete/${deleteId}`,
-            type: 'DELETE',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function (response) {
-                alert('vehicles deleted successfully!');
-                location.reload();
-            },
-            error: function (error) {
-                alert('Error deleting vehicles.');
-            }
-        });
+        if (deleteId) {
+            $.ajax({
+                url: '/admin/vehicles/delete/' + deleteId,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    // Close modal
+                    $('#deleteUserModal').modal('hide');
+
+                   
+                    location.reload(); // or remove row from DOM
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // alert('Error deleting vehicle.');
+                }
+            });
+        }
     });
-});
+  
+</script>
+
 </script>
 
 

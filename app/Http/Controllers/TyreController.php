@@ -16,6 +16,7 @@ class TyreController extends Controller
     }
     public function store(Request $request)
     {
+      
         $validatedData = $request->validate([
             'company' => 'required|string|max:255',
             'make_model' => 'required|string|max:255',
@@ -43,7 +44,7 @@ class TyreController extends Controller
 
    public function update(Request $request ,$id)
    {
-      
+    
        $tyres = Tyre::find($id);
         $validatedData = $request->validate([
             'company' => 'required|string|max:255',
@@ -86,6 +87,7 @@ class TyreController extends Controller
             return redirect()->route('admin.tyres.index')->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+  
 
 
 }

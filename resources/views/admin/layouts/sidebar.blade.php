@@ -21,23 +21,13 @@
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
                     <li><a href="{{ route('admin.vehicles.index') }}" data-key="t-vehicles">Vehicles</a></li>
-                    <li><a href="#" data-key="t-maintenance">Maintenance</a></li>
+                    <li><a href="{{ route('admin.maintenance.index') }}" data-key="t-maintenance">Maintenance</a></li>
                     <li><a href="{{ route('admin.tyres.index') }}" data-key="t-tyres">Tyres</a></li>
                 </ul>
             </li>
 
             
-            <li>
-                <a href="javascript:void(0);" class="has-arrow">
-                    <i data-feather="package"></i>
-                    <span data-key="t-consignment-booking">Consignment Booking</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="{{ route('admin.orders.index') }}" data-key="t-order-booking">Order Booking</a></li>
-                    <li><a href="{{ route('admin.consignment.index') }}" data-key="t-lr">LR / Consignment Note</a></li>
-                    <li><a href="{{ route('admin.freight.index') }}" data-key="t-freight-bill">Freight Bill</a></li>
-                </ul>
-            </li>
+            
             <li>
                 <a href="javascript:void(0);" class="has-arrow">
                     <i data-feather="users"></i>
@@ -69,6 +59,12 @@
                                 <li><a href="{{ route('admin.stock.index') }}" data-key="t-stock-transfer">Stock In/Transfer/Out</a>
                                 </li>
                 </ul>
+            </li>
+            <li>
+                <a href="{{ route('admin.task_management.index') }}">
+                    <i data-feather="clipboard"></i>
+                    <span data-key="t-task-management">Task Management</span>
+                </a>
             </li>
         </ul>
 

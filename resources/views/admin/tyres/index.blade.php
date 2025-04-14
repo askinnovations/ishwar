@@ -52,9 +52,9 @@
                             </button>
                         </div>
                         <div class="card-body">
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                            <table id=""  class="table table-bordered dt-responsive nowrap w-100">
                                 <thead>
-                                    <tr>
+                                    <tr >
                                         <th>S.No</th>
                                         <th>Company</th>
                                         <th>Make & Model</th>
@@ -78,29 +78,44 @@
 
                                             <td><span class="badge bg-success">{{ $tyre->tyre_health }}</span></td>
                                             <td>
-                                                <button class="btn btn-sm btn-light view-btn" data-bs-toggle="modal"
-                                                    data-bs-target="#viewTyreModal">
+                                                <button class="btn btn-sm btn-light view-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#viewTyreModal"
+                                                    data-company="{{ $tyre->company }}"
+                                                    data-model="{{ $tyre->make_model }}"
+                                                    data-description="{{ $tyre->description }}"
+                                                    data-format="{{ $tyre->format }}"
+                                                    data-tyre_number="{{ $tyre->tyre_number }}"
+                                                    data-health="{{ $tyre->tyre_health }}"
+                                                    onclick="viewTyreData(this)">
                                                     <i class="fas fa-eye text-primary"></i>
                                                 </button>
-                                              
-
-
-                                                <button class="btn btn-sm btn-light edit-btn" data-bs-toggle="modal"
-                                                    data-bs-target="#updateTyreModal" data-id="{{ $tyre->id }}">
+                                                <button class="btn btn-sm btn-light edit-btn"
+                                                    data-id="{{ $tyre->id }}"
+                                                    data-company="{{ $tyre->company }}"
+                                                    data-make_model="{{ $tyre->make_model }}"
+                                                    data-description="{{ $tyre->description }}"
+                                                    data-format="{{ $tyre->format }}"
+                                                    data-tyre_number="{{ $tyre->tyre_number }}"
+                                                    data-tyre_health="{{ $tyre->tyre_health }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#updateTyreModal">
                                                     <i class="fas fa-pen text-warning"></i>
                                                 </button>
-
                                                 <button class="btn btn-sm btn-light delete-btn"><a
-                                                        href="{{ route('admin.tyres.delete', $tyre->id) }}"> <i
+                                                        href="{{ route('admin.tyres.delete', $tyre->id) }}"  onclick="return confirm('Are you sure you want to delete this tyre record?')"> <i
                                                             class="fas fa-trash text-danger"></i>
                                                     </a>
                                                 </button>
+                                                
+
                                             </td>
                                         </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
+                           
                         </div>
                     </div>
                 </div>
@@ -125,7 +140,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Add Tyre Modal -->
             <div class="modal fade" id="addTyreModal" tabindex="-1" aria-labelledby="addTyreModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -135,7 +149,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('admin.tyres.store') }}" method="post">
+                              <form action="{{ route('admin.tyres.store') }}" method="post">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -202,19 +216,22 @@
                 </div>
             </div>
             {{-- //update tyre model --}}
-            <div class="modal fade" id="updateTyreModal" tabindex="-1" aria-labelledby="updateTyreModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="updateTyreModal" tabindex="-1" aria-labelledby="updateTyreModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
+            
                         <div class="modal-header">
-                            <h5 class="modal-title" id="updateTyreModalLabel">🛞 Update Tyre</h5>
+                            <h5 class="modal-title">🛞 Edit Tyre</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+            
                         <div class="modal-body">
-                            <form id="editForm" action="{{ route('admin.tyres.update', '__ID__') }}" method="post">
+                            <form id="editForm"  method="post" action="">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
+                                    <input type="hidden"  id="editid">
+                                    
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">🏢 Company</label>
                                         <input type="text" class="form-control" placeholder="Enter tyre company"
@@ -225,7 +242,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">🔩 Make & Model</label>
-                                        <input type="text" class="form-control" placeholder="Enter make & model"
+                                        <input type="text" class="form-control" placeholder="Enter make & model" 
                                             id="editModel" name="make_model" required>
                                         @error('make_model')
                                             <span class="text-danger">{{ $message }}</span>
@@ -271,198 +288,128 @@
                                 </div>
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Update Tyre</button>
+                                    
                                 </div>
                             </form>
                         </div>
+            
                     </div>
                 </div>
             </div>
-
+            <!-- Modal -->
+            <div class="modal fade" id="updateTyreModal" tabindex="-1" aria-labelledby="updateTyreModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+              
+                    <div class="modal-header">
+                      <h5 class="modal-title">🛞 Update Tyre</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+              
+                    <div class="modal-body">
+                        <p><strong>🏢 Company:</strong> <span id="viewCompany"></span></p>
+                        <p><strong>🔩 Make & Model:</strong> <span id="viewModel"></span></p>
+                        <p><strong>📄 Description:</strong> <span id="viewDescription"></span></p>
+                        <p><strong>📏 Format:</strong> <span id="viewFormat"></span></p>
+                        <p><strong>🆔 Tyre Number:</strong> <span id="viewTyreNumber"></span></p>
+                        <p><strong>📊 Health Status:</strong> <span id="viewHealth"></span></p>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
         </div>
-        <!-- End Page-content -->
-
-
-
     </div>
     <!-- end main content-->
 
     </div>
-    <!-- END layout-wrapper -->
-
-
-    
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Edit Button Click Handler
-            document.querySelectorAll('[data-bs-target="#updateTyreModal"]').forEach(button => {
-                button.addEventListener('click', function () {
-                    const row = this.closest('tr');
-
-                    // Populate form fields
-                    document.getElementById('editCompany').value = row.cells[1].textContent;
-                    document.getElementById('editModel').value = row.cells[2].textContent;
-                    document.getElementById('editTyreNumber').value = row.cells[3].textContent;
-                    document.getElementById('editDescription').value = row.cells[4].textContent;
-                    document.getElementById('editFormat').value = row.cells[5].textContent;
-                    document.getElementById('editHealth').value = row.cells[6].textContent.trim();
-
-                    // Update form action with record ID
-                    const form = document.querySelector('#updateTyreModal form');
-                    form.action = `/admin/tyres/${this.dataset.id}`;
-                });
-            });
-
-            // Add hidden input for PUT method
-            const form = document.querySelector('#updateTyreModal form');
-            form.innerHTML += '<input type="hidden" name="_method" value="PUT">';
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let editForm = document.getElementById("editForm");
-
-            function setEditId(tyreId) {
-                let formAction = "{{ route('admin.tyres.update', '__ID__') }}".replace('__ID__', tyreId);
-                editForm.setAttribute("action", formAction);
-            }
-
-            document.querySelectorAll(".edit-button").forEach(button => {
-                button.addEventListener("click", function () {
-                    let tyreId = this.getAttribute("data-id"); // Get ID from data attribute
-                    setEditId(tyreId);
-                });
-            });
-        });
-
-    </script>
-
-
-    <script>
-      
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".view-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                let row = button.closest("tr");
-       alert(row);
-                document.getElementById("viewCompany").textContent = row.cells[1].textContent;
-                document.getElementById("viewModel").textContent = row.cells[2].textContent;
-                document.getElementById("viewTyreNumber").textContent = row.cells[3].textContent;
-                document.getElementById("viewDescription").textContent = row.cells[4].textContent;
-                document.getElementById("viewFormat").textContent = row.cells[5].textContent;
-                document.getElementById("viewHealth").textContent = row.cells[6].textContent;
-
-                var viewModal = new bootstrap.Modal(document.getElementById("viewTyreModal"));
-                viewModal.show();
-               
-            });
-        });
    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Event delegation from document since child rows are dynamically inserted
+            document.addEventListener('click', function (e) {
+                // Check if the clicked element or its parent has class 'edit-btn'
+                const btn = e.target.closest('.edit-btn');
+                if (!btn) return;
+     
+                const tyreData = {
+                    id: btn.dataset.id,
+                    company: btn.dataset.company,
+                    make_model: btn.dataset.make_model,
+                    description: btn.dataset.description,
+                    format: btn.dataset.format,
+                    tyre_number: btn.dataset.tyre_number,
+                    tyre_health: btn.dataset.tyre_health
+                };
+    
+                // console.log("Clicked row data:", tyreData);
+    
+                // Fill modal fields
+                $('#editid').val(tyreData.id);
+                $('#editCompany').val(tyreData.company);
+                $('#editModel').val(tyreData.make_model);
+                $('#editDescription').val(tyreData.description);
+                $('#editFormat').val(tyreData.format);
+                $('#editTyreNumber').val(tyreData.tyre_number);
+                $('#editHealth').val(tyreData.tyre_health.toLowerCase()); 
 
-
-
-
-
-
-
-
-
-    // Function to attach delete event
-    function attachDeleteEvent(button) {
-    button.addEventListener("click", function () {
-    if (confirm("Are you sure you want to delete this tyre?")) {
-    button.closest("tr").remove();
-    }
-    });
-    }
-
-    // Function to get badge class based on health status
-    function getHealthBadgeClass(health) {
-    switch (health) {
-    case "New":
-    return "bg-success text-white"; // Green
-    case "Good":
-    return "bg-primary text-white"; // Blue
-    case "Worn Out":
-    return "bg-warning text-dark"; // Yellow
-    case "Needs Replacement":
-    return "bg-danger text-white"; // Red
-    default:
-    return "bg-secondary text-white"; // Gray (default)
-    }
-    }
-
-    // Attach existing buttons on page load
-    document.querySelectorAll(".view-btn").forEach(attachViewEvent);
-    document.querySelectorAll(".delete-btn").forEach(attachDeleteEvent);
-
-    // Show add tyre modal
-    document.getElementById("addTyreBtn").addEventListener("click", function () {
-    var addTyreModal = new bootstrap.Modal(document.getElementById("addTyreModal"));
-    addTyreModal.show();
-    });
-    document.getElementById("updateTyreBtn").addEventListener("click", function () {
-    var updateTyreBtnTyreModal = new bootstrap.Modal(document.getElementById("updateTyreModal"));
-    updateTyreModal.show();
-    });
-
-    // Handle saving tyre
-    document.getElementById("saveTyre").addEventListener("click", function () {
-    let company = document.getElementById("inputCompany").value;
-    let model = document.getElementById("inputModel").value;
-    let tyreNumber = document.getElementById("inputTyreNumber").value;
-    let description = document.getElementById("inputDescription").value;
-    let format = document.getElementById("inputFormat").value;
-    let health = document.getElementById("inputHealth").value;
-
-    if (company && model && tyreNumber) {
-    let table = document.getElementById("datatable").getElementsByTagName("tbody")[0];
-    let newRow = table.insertRow();
-
-    let badgeClass = getHealthBadgeClass(health);
-
-    newRow.innerHTML = `
-    <td>${table.rows.length}</td>
-    <td>${company}</td>
-    <td>${model}</td>
-    <td>${tyreNumber}</td>
-    <td>${description}</td>
-    <td>${format}</td>
-    <td><span class="badge ${badgeClass} p-1">${health}</span></td>
-    <td>
-        <button class="btn btn-sm btn-light view-btn">
-            <i class="fas fa-eye text-primary"></i>
-        </button>
-        <button class="btn btn-sm btn-light edit-btn">
-            <i class="fas fa-pen text-warning"></i>
-        </button>
-        <button class="btn btn-sm btn-light delete-btn">
-            <i class="fas fa-trash text-danger"></i>
-        </button>
-    </td>`;
-
-    // Attach events to new buttons
-    attachViewEvent(newRow.querySelector(".view-btn"));
-    attachDeleteEvent(newRow.querySelector(".delete-btn"));
-
-    // Clear input fields
-    document.getElementById("inputCompany").value = "";
-    document.getElementById("inputModel").value = "";
-    document.getElementById("inputTyreNumber").value = "";
-    document.getElementById("inputDescription").value = "";
-    document.getElementById("inputFormat").value = "";
-    document.getElementById("inputHealth").value = "Select health status";
-
-    // Hide the modal
-    let modal = bootstrap.Modal.getInstance(document.getElementById("addTyreModal"));
-    modal.hide();
-    } else {
-    alert("Please fill all required fields.");
-    }
-    });
-    });
-
+                let form = document.getElementById('editForm');
+                form.action = `/admin/tyres/update/${tyreData.id}`;
+                // Show modal
+                $('#updateTyreModal').modal('show');
+            });
+        });
     </script>
+   
+               <!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Apna custom jQuery script -->
+<script>
+    function viewTyreData(button) {
+      document.getElementById("viewCompany").textContent = button.dataset.company;
+      document.getElementById("viewModel").textContent = button.dataset.model;
+      document.getElementById("viewDescription").textContent = button.dataset.description;
+      document.getElementById("viewFormat").textContent = button.dataset.format;
+      document.getElementById("viewTyreNumber").textContent = button.dataset.tyre_number;
+      document.getElementById("viewHealth").textContent = button.dataset.health;
+    }
+  </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function getHealthBadgeClass(health) {
+                switch (health) {
+                    case "New":
+                        return "bg-success text-white"; // Green
+                    case "Good":
+                        return "bg-primary text-white"; // Blue
+                    case "Worn Out":
+                        return "bg-warning text-dark"; // Yellow
+                    case "Needs Replacement":
+                        return "bg-danger text-white"; // Red
+                    default:
+                        return "bg-secondary text-white"; // Gray (default)
+                }
+            }
+            // Attach existing buttons on page load
+            document.querySelectorAll(".view-btn").forEach(attachViewEvent);
+            document.querySelectorAll(".delete-btn").forEach(attachDeleteEvent);
+        });
+           
+       
+    </script>
+    {{-- open model add and update --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("addTyreBtn").addEventListener("click", function () {
+            var addTyreModal = new bootstrap.Modal(document.getElementById("addTyreModal"));
+            addTyreModal.show();
+        });
+        document.getElementById("updateTyreBtn").addEventListener("click", function () {
+                var updateTyreBtnTyreModal = new bootstrap.Modal(document.getElementById("updateTyreModal"));
+                updateTyreModal.show();
+            });  
+    });
+</script>
 
 @endsection
